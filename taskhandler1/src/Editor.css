@@ -1,0 +1,61 @@
+.Editor {
+  text-align: center;
+}
+
+.App-logo {
+  height: 10vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.Editor-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.outputJson {
+  font-size: 5px;
+  background-color: #23272e;
+}
+
+.jsonListItem {
+  background-color: #224B33;
+  color: #A3FEB9;
+  padding: 2px;
+  margin: 2px;
+  box-shadow: 3px 4px 0px #183926;
+}
+
+.jsonNestedListItem {
+  background-color: #1C263E;
+  color: #89AFFE;
+  box-shadow: 3px 4px 0px #141C2D;
+}
+
+li {
+  list-style: none inside;
+}
