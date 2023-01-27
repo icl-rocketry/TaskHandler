@@ -1,6 +1,8 @@
 //import React, { useState } from 'react';
 import logo from './logo.svg';
 import './Editor.css';
+import TextInput from './textinput';
+import { useState } from 'react';
 
 var debugText = `{
   "task_name": "fc_telemetry",
@@ -91,15 +93,40 @@ class jsonItem {
     }
 }
 
-function createList(items: jsonItem[]){
+function createList(items: jsonItem[], totalItems: jsonItem[], iter:number, setItemArray:((itemArray:jsonItem[]) => void)){
   return (
-    <ul className="">
+    <ul className={items !== totalItems ? "nestedList" : ""}>
     {items.map(function(item, i){
       if(!item.nested){
-        return <li key={i} className="jsonListItem">{item.key} : {item.value}</li>
+        var [key, setKey] = useState(item.key);
+        var updateKey = (value:string) => {
+          setKey(value)
+          if(items === totalItems){
+            totalItems[i].key = value
+            setItemArray(totalItems)
+          } else{
+            totalItems[iter].inside[i].key = value
+            setItemArray(totalItems)
+          }
+        }
+        var [value, setValue] = useState(item.value);
+        var updateValue = (value:string) => {
+          setValue(value)
+          if(items === totalItems){
+            totalItems[i].value = value
+            setItemArray(totalItems)
+          } else{
+            totalItems[iter].inside[i].value = value
+            setItemArray(totalItems)
+          }
+        }
+        return <li key={i} className="jsonListItem">
+          <TextInput text={key} inputMode={false} returnFunction={updateKey}/> : 
+          <TextInput text={value} inputMode={false} returnFunction={updateValue}/>
+        </li>
       } else{
         return (
-          <li key={i} className="jsonListItem jsonNestedListItem">{item.key}{createList(item.inside)}</li>
+          <li key={i} className="jsonListItem jsonNestedListItem">{item.key}{createList(item.inside, totalItems, i ,setItemArray)}</li>
         )
       }
     }
@@ -110,7 +137,6 @@ function createList(items: jsonItem[]){
 
 function Editor() {
 
-  var jsonArray : jsonItem[] = [];
 
   /*var curJson = JSON.parse(debugText, function(key, value) {
     jsonArray.push(new jsonItem(key, value));
@@ -119,23 +145,41 @@ function Editor() {
     }
   });*/
 
-  var currentJson = JSON.parse(debugText);
+  var currentJson = JSON.parse(debugText)
 
-  Object.keys(currentJson).map(key =>
-      jsonArray.push(new jsonItem(String(key), currentJson[key]))
-    )
+  var startJson : jsonItem[] = []
+  Object.keys(currentJson).map(key => startJson.push(new jsonItem(String(key), currentJson[key])))
+  const [jsonArray, setJsonArray] = useState<jsonItem[]>(startJson)
 
-  //console.log(Object.values(JSON.parse(debugText)))
+  console.log(jsonArray)
+
+  function rawJson(jsonArray : jsonItem[]): string {
+    var newArray:any = {}
+    jsonArray.map((item) => {
+      if(!item.nested){
+        newArray[item.key] = item.value
+      } else {
+        newArray[item.key] = {}
+        item.inside.map((nestedItem) => {
+          newArray[item.key][nestedItem.key] = nestedItem.value
+        })
+      }
+    })
+    return JSON.stringify(newArray, null, 2)
+  }
 
   return (
     <div className="Editor">
-      <header className="Editor-header">
+      {/*<header className="Editor-header" >
         <img src={logo} className="App-logo" alt="logo" />
-        {createList(jsonArray)}
-        <pre className="outputJson">
-          <code>{debugText}</code>
-        </pre>
-      </header>
+  </header>*/}
+      <body>
+        <div className="mainTable">
+          <div className='tableElements'> <h1>Input</h1> <pre className="outputJson"><code>{debugText}</code></pre></div>
+          <div className='tableElements'>{createList(jsonArray, jsonArray, 0, setJsonArray)}</div>
+          <div className='tableElements'> <h1>Output</h1> <pre className="outputJson"><code>{rawJson(jsonArray)}</code></pre></div>
+        </div>
+      </body>
     </div>
   );
 }
