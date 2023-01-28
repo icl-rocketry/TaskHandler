@@ -1,0 +1,31 @@
+.valueMenu {
+    display:inline-flex;
+}
+.selected {
+    color: #F1BDDA;
+    background-color: #35222C;
+}
+.wrong {
+    color: #333333;
+    background-color: #232322;
+}
+.valueItem{
+    min-width: 100px;
+    min-height: 38px;
+}
+.stringItem{
+    width: 300px;
+    min-height: 38px;
+}
+.numberItem{
+    width: 100px;
+}
+input{
+    min-width: 90px;
+    max-width: 90%;
+    min-height: 30px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: calc(10px + 2vmin);  
+}

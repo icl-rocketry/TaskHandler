@@ -1,4 +1,4 @@
-{
+const inputJson = {
     "task_name": "fc_telemetry",
     "autostart": false,
     "poll_delta": 500,
@@ -63,3 +63,4 @@
     "connected": true,
     "lastReceivedPacket": ""
 }
+export default inputJson
