@@ -51,6 +51,7 @@ function Editor() {
 
         packet_descriptor.indicies.map((id:number) => {
             output.packet_descriptor = {...output.packet_descriptor, [packet_descriptor[id].title]:packet_descriptor[id].type}
+            return null
         })
 
         return output
@@ -75,7 +76,7 @@ function Editor() {
                         <Item title="lastReceivedPacket" state={lastReceivedPacket} setState={set_lastRecievedPacket}/>
                     </ul>
                 </div>
-                <div className='tableElements'> <h1>Input</h1> <pre className="outputJson"><code>{JSON.stringify(outputJson(), null, 2)}</code></pre></div>
+                <div className='tableElements'> <h1>Output</h1> <pre className="outputJson"><code>{JSON.stringify(outputJson(), null, 2)}</code></pre></div>
             </div>
         </div>
     )
@@ -183,7 +184,7 @@ function TypeSelect(props:{id: number, packet_descriptor:any, set_packet_descrip
             <div className='dropdown-top'>
                 <button 
                     className="dropbtn"
-                    onClick={() => handleSelectOpen(true)}
+                    onClick={() => handleSelectOpen(!props.packet_descriptor[props.id].open)}
                 >
                     {props.packet_descriptor[props.id].type}
                 </button>
