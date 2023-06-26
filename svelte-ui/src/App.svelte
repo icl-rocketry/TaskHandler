@@ -74,7 +74,7 @@
 
   function onDeleteTask(){
     socket.emit('deleteTaskConfig',tryParse(taskCopy))
-    taskCopy = ""
+    taskCopy = "Click on a task to edit it"
   }
   function tryParse(data){
     try{
@@ -127,10 +127,10 @@
     display: flex;
   }
   .left{
-    margin-right: 100px;
-    max-width: 400px;
+    margin-right: 2vw;
+    width: 20vw;
   }
   .right {
-    min-width:40vw;
+    width:40vw;
   }
 </style>
