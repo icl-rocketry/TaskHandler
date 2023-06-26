@@ -5,13 +5,13 @@ sio = socketio.AsyncClient()
 
 @sio.event
 async def connect():
-    print('connection established')
+    print('CLIENT: This shouldnt run, connected to namespace /')
     await sio.emit('getRunningTasks',"testing ", namespace='/data_request_handler')
 
 @sio.on('connect', namespace='/data_request_handler')
 async def connect_special():
-    print('holy fucking shit, client has connected to the namespace')
-    await sio.emit('getRunningTasks',"testing ", namespace='/data_request_handler')
+    print('CLIENT: Connected to /data_request_handler, will now emit getRunningTasks')
+    await sio.emit('getRunningTasks', namespace='/data_request_handler')
 
 
 @sio.event
