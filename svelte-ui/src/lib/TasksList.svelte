@@ -6,8 +6,8 @@
   const dispatch = createEventDispatcher()
 </script>
 
-<div>
-  <h1>Tasks:</h1>
+<div class='taskListDiv'>
+  <h3>Tasks:</h3>
   <ol>
     {#each tasks as task}
       <li>
@@ -22,5 +22,10 @@
     list-style-type: none;
     padding: 0;
     text-align: center;
+  }
+  .taskListDiv{
+    border: 1px solid #ccc;
+    height: 45vh;
+    overflow: auto;
   }
 </style>

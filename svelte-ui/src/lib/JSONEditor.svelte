@@ -1,15 +1,25 @@
 <script>
-  export let task
+  export let value
+  import Prism from 'prismjs'
+  import 'prismjs/components/prism-json'
+  import { afterUpdate, onMount } from 'svelte'
 
-  import { createEventDispatcher } from "svelte"
-  const dispatch = createEventDispatcher()
+  let textarea
+
+  onMount(() => {
+    Prism.highlightElement(textarea)
+  })
+  afterUpdate(() => {
+    Prism.highlightElement(textarea)
+  })
 </script>
 
-<div><textarea> {JSON.stringify(task, null ,2)} </textarea></div>
+<textarea bind:value bind:this={textarea}></textarea>
 
 <style>
   textarea {
     width: 100%;
     height: 70vh;
+    
   }
 </style>
