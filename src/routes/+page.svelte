@@ -8,7 +8,7 @@
     import NiceButton from '$lib/NiceButton.svelte';
     import TasksList from '$lib/TasksList.svelte'
     import JSONEditor from '$lib/JSONEditor.svelte';
-    import ErrorList from '$lib/ErrorList.svelte';
+    import ConsoleBox from '$lib/ConsoleBox.svelte';
     
     let tasks = []
     //tasks = fakeJson
@@ -17,7 +17,7 @@
     let poll_interval;
     let socket;
     let poll_time = 0
-    let errors = ""
+    let log = ""
     
   
   
@@ -49,8 +49,17 @@
       var taskIndex = tasks.findIndex(function(task) {return task.task_name == event.detail.task_name})
       taskCopy = JSON.stringify(tasks[taskIndex],null,2)
     }
+
+    function onToggleTask(event){
+      var taskIndex = tasks.findIndex(function(task) {return task.task_name == event.detail.task_name})
+      var taskToToggle = tasks[taskIndex]
+      taskToToggle.running = !taskToToggle.running
+      socket.emit('newTaskConfig', taskToToggle)
+    }
+
     function onRefreshTasks(){
       socket.emit('getRunningTasks')
+      log = log + timeString() + ` Manually sending getRunningTasks \n`
     }
   
     function onNewTask(){
@@ -61,17 +70,24 @@
   
     function onClearTasks(){
       socket.emit('clearTasks')
+      log = log + timeString() + ` Cleared all tasks \n`
     }
   
     function onSaveTask(){
-      socket.emit('saveHandlerConfig', tryParse(taskCopy))
+      var taskObject = tryParse(taskCopy)
+      socket.emit('saveHandlerConfig', taskObject)
+      log = log + timeString() + ` Saving ${taskObject.task_name} \n`
     }
     function onUpdateTask(){
-      socket.emit('newTaskConfig', tryParse(taskCopy))
+      var taskObject = tryParse(taskCopy)
+      socket.emit('newTaskConfig', taskObject)
+      log = log + timeString() + ` Pushing ${taskObject.task_name} to Ricardo Backend\n`
     }
   
     function onDeleteTask(){
-      socket.emit('deleteTaskConfig',tryParse(taskCopy))
+      var taskObject = tryParse(taskCopy)
+      socket.emit('deleteTaskConfig', taskObject)
+      log = log + timeString() + ` Deleting ${taskObject.task_name} \n`
       taskCopy = "Click on a task to edit it"
     }
     function tryParse(data){
@@ -79,13 +95,17 @@
         return JSON.parse(data)
       } catch(error){
         const errorString = error.toString()
-        const now = new Date();
-        const hour = now.getHours();
-        const minute = now.getMinutes();
-        const second = now.getSeconds();
+
   
-        errors = errors + (`[${hour}:${minute}:${second}] ${errorString} \n`)
+        log = log + timeString() + ` ${errorString} \n`
       }
+    }
+    function timeString(){
+      const now = new Date();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      const second = now.getSeconds();
+      return `[${hour}:${minute}:${second}]`
     }
 </script>
   
@@ -96,19 +116,19 @@
         <img src={iclrLogo} class="logo" alt="Vite Logo" />
       </div>
       <h1>Task Handler UI</h1>
-      <NiceButton on:click={onRefreshTasks} text='Manually Refresh'/>
+      <NiceButton on:click={onRefreshTasks} text='Force Refresh'/>
       <NiceButton on:click={onClearTasks} text='Clear Tasks'/>
-      <TasksList tasks={tasks} on:selectTask={onSelectTask}/>
+      <TasksList tasks={tasks} on:selectTask={onSelectTask} on:toggleTask={onToggleTask}/>
     </div>
     <div class='right'>
       <JSONEditor bind:value={taskCopy}/>
       <NiceButton on:click={onSaveTask} text='Save to disk'/>
       <NiceButton on:click={onNewTask} text='New Task'/>
-      <NiceButton on:click={onUpdateTask} text='Update task'/>
+      <NiceButton on:click={onUpdateTask} text='Push Task'/>
       <NiceButton on:click={onDeleteTask} text='Delete'/>
     </div>
   </div>
-  <ErrorList value={errors}/>
+  <ConsoleBox value={log}/>
 </main>
 
 <style>
@@ -126,10 +146,10 @@
   }
   .left{
     margin-right: 2vw;
-    width: 20vw;
+    width: 40vw;
   }
   .right {
-    width:40vw;
+    width: 100%;
   }
   :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -153,7 +173,7 @@ h1 {
 main {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1rem; 
   text-align: center;
 }
 </style>
