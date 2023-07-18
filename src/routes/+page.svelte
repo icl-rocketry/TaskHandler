@@ -30,13 +30,14 @@
     }
   
     onMount(() => {
-      socket = io('http://localhost:1337/data_request_handler')
+      socket = io('http://' + location.hostname + ':' + location.port +'/data_request_handler')
   
       socket.on('connect', () => {
         poll_interval = setInterval(checkDeltaPoll, 1);
       })
       socket.on('runningTasks', (data) => {
           tasks = data
+          poll_time = Date.now()
       })
   
     })
