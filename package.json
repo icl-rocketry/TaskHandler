@@ -20,6 +20,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"socket.io-client": "^4.7.0"
+		"@codemirror/lang-json": "^6.0.1",
+		"@codemirror/theme-one-dark": "^6.1.2",
+		"socket.io": "^4.7.1",
+		"socket.io-client": "^4.7.1",
+		"svelte-codemirror-editor": "^1.1.0"
 	}
 }

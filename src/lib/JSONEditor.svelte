@@ -1,4 +1,7 @@
 <script>
+  import CodeMirror from "svelte-codemirror-editor";
+  import { json } from "@codemirror/lang-json";
+  import { oneDark } from "@codemirror/theme-one-dark";
   export let value
   let taskname
   $:{
@@ -7,21 +10,26 @@
     } catch{
       taskname = "Not valid JSON"
     }
-
   }
 </script>
 
 <div class="jsonEditorDiv">
-  Currently Editing: {taskname}
-  <textarea bind:value spellcheck="false"></textarea>
+  <div class="jsonTitle">Currently Editing: {taskname}</div>
+  <CodeMirror bind:value lang={json()} theme={oneDark} 
+    styles={{
+      "&": {
+        width: "100%",
+        height: "61vh"
+      },
+    }}
+  />
 </div>
 <style>
-  textarea {
-    width: 100%;
-    height: 61vh;
-    caret-color: initial;
+  .jsonTitle{
+    text-align:  center;
   }
   .jsonEditorDiv{
     padding: 20px;
+    text-align: left;
   }
 </style>
