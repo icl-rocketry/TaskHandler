@@ -8,8 +8,8 @@
 </script>
 
 <div class='taskListDiv'>
-  <h3>Tasks:</h3>
-  <table>
+  <h3>Tasks</h3>
+  <table class='tasktable'>
     {#each tasks as task}
       <tr>
         <td>
@@ -18,25 +18,50 @@
         <td>
           <ToggleButton on:click={() => dispatch('toggleTask', {'task_name': task.task_name})} toggle={task.running}/>
         </td>
+        <td>
+          <div class='stats'>
+            <div class="labelwidth">
+              tx 
+              <br>
+              rx 
+            </div>
+            <div class="counterwidth">
+              {task.txCounter}
+              <br>
+              {task.rxCounter}
+            </div>
+          </div>
+        </td>
       </tr>
     {/each}
     </table>
   
 </div>
 <style>
-  table{
+  .tasktable{
     list-style-type: none;
     padding: 0;
     text-align: center;
     border: 1px solid #ccc;
     width: 100%;
   }
-  td{
-    width:50%;
-  }
   .taskListDiv{
     border: 1px solid #ccc;
     height: 40vh;
     overflow: auto;
+  }
+  .stats{
+    font-size: 20px;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .labelwidth{
+    width: 10px;
+    padding-right: 10px;
+  }
+  .counterwidth{
+    width: 90px;
+    text-align: left;
   }
 </style>

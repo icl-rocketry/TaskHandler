@@ -22,8 +22,10 @@
 	"dependencies": {
 		"@codemirror/lang-json": "^6.0.1",
 		"@codemirror/theme-one-dark": "^6.1.2",
+		"socket-io": "^1.0.0",
 		"socket.io": "^4.7.1",
-		"socket.io-client": "^4.7.1",
-		"svelte-codemirror-editor": "^1.1.0"
+		"socket.io-client": "^4.7.2",
+		"svelte-codemirror-editor": "^1.1.0",
+		"websocket": "^1.0.34"
 	}
 }

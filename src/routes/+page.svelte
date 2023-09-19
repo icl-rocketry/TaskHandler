@@ -31,6 +31,8 @@
   
     onMount(() => {
       socket = io('http://' + location.hostname + ':' + location.port +'/data_request_handler')
+      //dev only
+      //socket = io('http://localhost:1337/data_request_handler')
   
       socket.on('connect', () => {
         poll_interval = setInterval(checkDeltaPoll, 1);
