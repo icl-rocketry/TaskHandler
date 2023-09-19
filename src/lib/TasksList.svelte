@@ -21,9 +21,9 @@
         <td>
           <div class='stats'>
             <div class="labelwidth">
-              tx 
+              TX 
               <br>
-              rx 
+              RX 
             </div>
             <div class="counterwidth">
               {task.txCounter}
@@ -51,7 +51,7 @@
     overflow: auto;
   }
   .stats{
-    font-size: 20px;
+    font-size: 14px;
     background-color: #1a1a1a;
     display: flex;
     justify-content: flex-start;
