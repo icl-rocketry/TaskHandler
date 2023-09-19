@@ -21,9 +21,9 @@
         <td>
           <div class='stats'>
             <div class="labelwidth">
-              TX 
+              tx 
               <br>
-              RX 
+              rx 
             </div>
             <div class="counterwidth">
               {task.txCounter}

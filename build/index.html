@@ -5,20 +5,20 @@
 		<meta name="viewport" content="width=device-width" />
 		
 		<link href="./_app/immutable/assets/2.f2d791d4.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.8755fbfe.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.5b02999e.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/scheduler.061b3f0c.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.76a72f3d.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.6cfbd18c.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.24f55eff.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.9649ccdc.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/index.25f510b2.js">
 		<link rel="modulepreload" href="./_app/immutable/nodes/0.ba2dae86.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/2.492d413e.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.0f5c5581.js">
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">  <main class="svelte-1pke10g"><div class="container svelte-1pke10g"><div class="left svelte-1pke10g"><div><img src="/_app/immutable/assets/ICLR-LOGO.bc213050.png" class="logo svelte-1pke10g" alt="Vite Logo"></div> <h1 class="svelte-1pke10g" data-svelte-h="svelte-1vfjh0d">Task Handler UI</h1> <button class="svelte-ks3xkd">Force Refresh </button> <button class="svelte-ks3xkd">Clear Tasks </button> <div class="taskListDiv svelte-1rw8d9w"><h3 data-svelte-h="svelte-1lqzi48">Tasks</h3> <table class="tasktable svelte-1rw8d9w"></table> </div></div> <div class="right svelte-1pke10g"><div class="jsonEditorDiv svelte-td2vir"><div class="jsonTitle svelte-td2vir">Currently Editing: Not valid JSON</div> <div class="scm-waiting  svelte-kcx0g9"><div class="scm-waiting__loading scm-loading svelte-kcx0g9" data-svelte-h="svelte-1pxusly"><div class="scm-loading__spinner svelte-kcx0g9"></div> <p class="scm-loading__text svelte-kcx0g9">Loading editor...</p></div> <pre class="scm-pre cm-editor svelte-kcx0g9">Click on a task to edit it</pre></div> </div> <button class="svelte-ks3xkd">Save to disk </button> <button class="svelte-ks3xkd">New Task </button> <button class="svelte-ks3xkd">Push Task </button> <button class="svelte-ks3xkd">Delete </button></div></div> <h3 data-svelte-h="svelte-umilw8">Log</h3> <div class="errorListDiv svelte-1xddluw"><pre></pre> </div> </main> 
 			
 			<script>
 				{
-					__sveltekit_zs74jg = {
+					__sveltekit_orc5ti = {
 						base: new URL(".", location).pathname.slice(0, -1),
 						env: {}
 					};
@@ -28,8 +28,8 @@
 					const data = [null,null];
 
 					Promise.all([
-						import("./_app/immutable/entry/start.8755fbfe.js"),
-						import("./_app/immutable/entry/app.6cfbd18c.js")
+						import("./_app/immutable/entry/start.5b02999e.js"),
+						import("./_app/immutable/entry/app.9649ccdc.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 2],
