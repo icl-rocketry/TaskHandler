@@ -18,7 +18,7 @@
   <CodeMirror bind:value lang={json()} theme={oneDark} 
     styles={{
       "&": {
-        width: "100%",
+        width: "50vw",
         height: "61vh"
       },
     }}

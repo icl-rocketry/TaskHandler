@@ -1,6 +1,7 @@
 <script>
   export let tasks
   import NiceButton from "./NiceButton.svelte"
+    import TaskButton from "./TaskButton.svelte";
   import ToggleButton from "./ToggleButton.svelte"
 
   import { createEventDispatcher } from "svelte"
@@ -13,7 +14,7 @@
     {#each tasks as task}
       <tr>
         <td>
-          <NiceButton on:click={() => dispatch('selectTask', {'task_name': task.task_name})} text={task.task_name}/>
+          <TaskButton on:click={() => dispatch('selectTask', {'task_name': task.task_name})} text={task.task_name} connected={task.connected}/>
         </td>
         <td>
           <ToggleButton on:click={() => dispatch('toggleTask', {'task_name': task.task_name})} toggle={task.running}/>
