@@ -84,6 +84,28 @@
     taskCopy = JSON.stringify(tasks[taskIndex], null, 2);
   }
 
+  function startTask(task) {
+    // Set task flag to started
+    task.running = true;
+
+    // Emit message to update task run state
+    socket.emit("newTaskConfig", task);
+
+    // Log task start
+    updateLog("Started task " + task.task_name);
+  }
+
+  function stopTask(task) {
+    // Set task flag to stopped
+    task.running = false;
+
+    // Emit message to update task run state
+    socket.emit("newTaskConfig", task);
+
+    // Log task stop
+    updateLog("Stopped task " + task.task_name);
+  }
+
   function onToggleTask(event) {
     // Find index of task by name
     var taskIndex = tasks.findIndex(function (task) {
@@ -91,13 +113,16 @@
     });
 
     // Extract task from task list
-    var taskToToggle = tasks[taskIndex];
+    var task = tasks[taskIndex];
 
-    // Toggle run flag
-    taskToToggle.running = !taskToToggle.running;
-
-    // Emit message to update task
-    socket.emit("newTaskConfig", taskToToggle);
+    // Check if the task is running
+    if (task.running) {
+      // Stop task
+      stopTask(task);
+    } else {
+      // Start task
+      startTask(task);
+    }
   }
 
   function onRefreshTasks() {
@@ -105,7 +130,7 @@
     socket.emit("getRunningTasks");
 
     // Log task update request
-    log = log + timeString() + ` Manually sending getRunningTasks \n`;
+    updateLog("Manually refreshing tasks");
   }
 
   function onNewTask() {
@@ -113,6 +138,7 @@
     var newTask = { ...fakeJson[0] };
 
     // Update task name
+    // TODO: make more resilient
     newTask.task_name = "newtask_" + String(tasks.length);
 
     // Update string for selected task contents
@@ -124,7 +150,7 @@
     socket.emit("clearTasks");
 
     // Log clearing of tasks
-    log = log + timeString() + ` Cleared all tasks \n`;
+    updateLog("Cleared all tasks");
   }
 
   function onSaveTask() {
@@ -135,7 +161,7 @@
     socket.emit("saveHandlerConfig", taskObject);
 
     // Log task save
-    log = log + timeString() + ` Saving ${taskObject.task_name} \n`;
+    updateLog("Saving " + taskObject.task_name);
   }
 
   function onUpdateTask() {
@@ -146,10 +172,7 @@
     socket.emit("newTaskConfig", taskObject);
 
     // Log task update
-    log =
-      log +
-      timeString() +
-      ` Pushing ${taskObject.task_name} to Ricardo Backend\n`;
+    updateLog("Pushing " + taskObject.task_name + " to Ricardo Backend");
   }
 
   function onDeleteTask() {
@@ -159,11 +182,37 @@
     // Emit message to delete task configuration
     socket.emit("deleteTaskConfig", taskObject);
 
-    // Log task deletion
-    log = log + timeString() + ` Deleting ${taskObject.task_name} \n`;
-
     // Reset selected task contents
     taskCopy = "Click on a task to edit it";
+
+    // Log task deletion
+    updateLog("Deleting " + taskObject.task_name);
+  }
+
+  function onStartAllTasks() {
+    // Loop through tasks
+    for (var task of tasks) {
+      // Skip if task is already running
+      if (task.running) {
+        continue;
+      }
+
+      // Start task
+      startTask(task);
+    }
+  }
+
+  function onStopAllTasks() {
+    // Loop through tasks
+    for (var task of tasks) {
+      // Skip if task is already stopped
+      if (!task.running) {
+        continue;
+      }
+
+      // Stop task
+      stopTask(task);
+    }
   }
 
   function tryParse(data) {
@@ -175,41 +224,16 @@
       const errorString = error.toString();
 
       // Log error message
-      log = log + timeString() + ` ${errorString} \n`;
+      updateLog("Failed to parse JSON: " + errorString);
     }
   }
 
-  function timeString() {
-    // Extract current time
-    const now = new Date();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const second = now.getSeconds();
+  function updateLog(message) {
+    // Generate current time string
+    const nowString = "[" + new Date().toLocaleTimeString() + "]";
 
-    // Return current time string
-    return `[${hour}:${minute}:${second}]`;
-  }
-
-  function onStartAllTasks() {
-    // Loop through tasks
-    for (var task of tasks) {
-      // Start task
-      task.running = true;
-
-      // Emit message to update task run state
-      socket.emit("newTaskConfig", task);
-    }
-  }
-
-  function onStopAllTasks() {
-    // Loop through tasks
-    for (var task of tasks) {
-      // Stop task
-      task.running = false;
-
-      // Emit message to update task run state
-      socket.emit("newTaskConfig", task);
-    }
+    // Update log
+    log = log + nowString + " " + message + "\n";
   }
 </script>
 
