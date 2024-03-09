@@ -1,20 +1,23 @@
 <script>
-    export let toggle
-    $: running = toggle ? "Running" : "Not Running"
-  </script>
-  
-  <button on:click class={toggle}>
-    {running}
-  </button>
-  
-  <style>
-    .true {
-      background-color: green;
-    }
-    .false {
-      background-color: red;
-    }
-    button {
+  // Export button toggle state
+  export let toggle;
+
+  // Define reactive running string, based on toggle state
+  $: running = toggle ? "Running" : "Not Running";
+</script>
+
+<button on:click class={toggle}>
+  {running}
+</button>
+
+<style>
+  .true {
+    background-color: green;
+  }
+  .false {
+    background-color: red;
+  }
+  button {
     width: 150px;
     border-radius: 8px;
     border: 1px solid transparent;
@@ -32,4 +35,4 @@
   button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
   }
-  </style>
+</style>

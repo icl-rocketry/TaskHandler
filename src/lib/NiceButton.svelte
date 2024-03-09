@@ -1,13 +1,14 @@
 <script>
-    export let text
-  </script>
-  
-  <button on:click>
-    {text}
-  </button>
-  
-  <style>
-    button {
+  // Export button text
+  export let text;
+</script>
+
+<button on:click>
+  {text}
+</button>
+
+<style>
+  button {
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
@@ -26,4 +27,4 @@
   button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
   }
-  </style>
+</style>
