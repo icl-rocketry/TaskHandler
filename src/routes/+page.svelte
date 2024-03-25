@@ -192,6 +192,11 @@
   function onStartAllTasks() {
     // Loop through tasks
     for (var task of tasks) {
+      // Skip if task not grouped
+      if (!task.grouped) {
+        continue;
+      }
+
       // Skip if task is already running
       if (task.running) {
         continue;
@@ -205,6 +210,11 @@
   function onStopAllTasks() {
     // Loop through tasks
     for (var task of tasks) {
+      // Skip if task not grouped
+      if (!task.grouped) {
+        continue;
+      }
+
       // Skip if task is already stopped
       if (!task.running) {
         continue;
