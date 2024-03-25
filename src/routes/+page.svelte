@@ -244,15 +244,19 @@
         <img src={iclrLogo} class="logo" alt="Vite Logo" />
       </div>
       <h1>Task Handler UI</h1>
-      <NiceButton on:click={onRefreshTasks} text="Force Refresh" />
-      <NiceButton on:click={onClearTasks} text="Clear Tasks" />
+      <p class="button-row">
+        <NiceButton on:click={onRefreshTasks} text="Force Refresh" />
+        <NiceButton on:click={onClearTasks} text="Clear Tasks" />
+      </p>
       <TasksList
         {tasks}
         on:selectTask={onSelectTask}
         on:toggleTask={onToggleTask}
       />
-      <NiceButton on:click={onStartAllTasks} text="Start All" />
-      <NiceButton on:click={onStopAllTasks} text="Stop All" />
+      <p class="button-row">
+        <NiceButton on:click={onStartAllTasks} text="Start All" />
+        <NiceButton on:click={onStopAllTasks} text="Stop All" />
+      </p>
     </div>
     <div class="right">
       <JSONEditor bind:value={taskCopy} />
@@ -277,13 +281,18 @@
   }
   .container {
     display: flex;
+    justify-content: center;
+  }
+  .button-row {
+    margin-top: 6pt;
+    margin-bottom: 6pt;
   }
   .left {
     margin-right: 2vw;
-    width: 40vw;
+    width: 30vw;
   }
   .right {
-    width: 100%;
+    width: auto;
   }
   :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

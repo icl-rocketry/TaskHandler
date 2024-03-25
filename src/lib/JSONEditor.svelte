@@ -30,8 +30,8 @@
     theme={oneDark}
     styles={{
       "&": {
-        width: "50vw",
-        height: "61vh",
+        width: "40vw",
+        height: "70vh",
       },
     }}
   />
@@ -40,6 +40,7 @@
 <style>
   .jsonTitle {
     text-align: center;
+    margin-bottom: 6pt;
   }
   .jsonEditorDiv {
     padding: 20px;
