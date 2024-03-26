@@ -122,6 +122,17 @@
     updateLog("Stopped task " + task.task_name);
   }
 
+  function toggleTask(task) {
+    // Check if the task is running
+    if (task.running) {
+      // Stop task
+      stopTask(task);
+    } else {
+      // Start task
+      startTask(task);
+    }
+  }
+
   function onToggleTask(event) {
     // Find index of task by name
     var taskIndex = tasks.findIndex(function (task) {
@@ -131,14 +142,8 @@
     // Extract task from task list
     var task = tasks[taskIndex];
 
-    // Check if the task is running
-    if (task.running) {
-      // Stop task
-      stopTask(task);
-    } else {
-      // Start task
-      startTask(task);
-    }
+    // Toggle the task
+    toggleTask(task);
   }
 
   function onRefreshTasks() {
