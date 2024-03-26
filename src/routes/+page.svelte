@@ -277,10 +277,6 @@
     // Update log
     log = log + nowString + " " + message + "\n";
   }
-
-  function printGroup(event) {
-    console.log(event.detail.group_name);
-  }
 </script>
 
 <main>
