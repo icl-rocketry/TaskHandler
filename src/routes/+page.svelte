@@ -47,14 +47,13 @@
   onMount(() => {
     // Connect to backend Socket.IO
     // TODO: update URL
-    // socket = io(
-    //   "http://" +
-    //     location.hostname +
-    //     ":" +
-    //     location.port +
-    //     "/data_request_handler",
-    // );
-    socket = io("http://localhost:1337/data_request_handler");
+    socket = io(
+      "http://" +
+        location.hostname +
+        ":" +
+        location.port +
+        "/data_request_handler",
+    );
 
     // Set connection callback
     socket.on("connect", () => {
