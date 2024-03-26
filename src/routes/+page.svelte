@@ -7,6 +7,7 @@
 
   // Internal imports
   import ConsoleBox from "$lib/ConsoleBox.svelte";
+  import GroupsList from "$lib/GroupsList.svelte";
   import JSONEditor from "$lib/JSONEditor.svelte";
   import NiceButton from "$lib/NiceButton.svelte";
   import TasksList from "$lib/TasksList.svelte";
@@ -17,6 +18,7 @@
 
   // Declare list for tasks
   let tasks = [];
+  let groups = [];
 
   // Declare string for selected task contents
   let taskCopy = "Click on a task to edit it";
@@ -45,13 +47,14 @@
   onMount(() => {
     // Connect to backend Socket.IO
     // TODO: update URL
-    socket = io(
-      "http://" +
-        location.hostname +
-        ":" +
-        location.port +
-        "/data_request_handler",
-    );
+    // socket = io(
+    //   "http://" +
+    //     location.hostname +
+    //     ":" +
+    //     location.port +
+    //     "/data_request_handler",
+    // );
+    socket = io("http://localhost:1337/data_request_handler");
 
     // Set connection callback
     socket.on("connect", () => {
@@ -63,6 +66,9 @@
     socket.on("runningTasks", (data) => {
       // Update tasks
       tasks = data;
+
+      // Update groups
+      groups = [...new Set(tasks.map((task) => task.groups).flat())].sort();
 
       // Update last poll time
       poll_time = Date.now();
@@ -192,11 +198,6 @@
   function onStartAllTasks() {
     // Loop through tasks
     for (var task of tasks) {
-      // Skip if task not grouped
-      if (!task.grouped) {
-        continue;
-      }
-
       // Skip if task is already running
       if (task.running) {
         continue;
@@ -210,8 +211,45 @@
   function onStopAllTasks() {
     // Loop through tasks
     for (var task of tasks) {
-      // Skip if task not grouped
-      if (!task.grouped) {
+      // Skip if task is already stopped
+      if (!task.running) {
+        continue;
+      }
+
+      // Stop task
+      stopTask(task);
+    }
+  }
+
+  function onStartGroupTasks(event) {
+    // Extract group name
+    const group = event.detail.group_name;
+
+    // Loop through tasks
+    for (var task of tasks) {
+      // Skip if not part of group
+      if (!task.groups.includes(group)) {
+        continue;
+      }
+
+      // Skip if task is already running
+      if (task.running) {
+        continue;
+      }
+
+      // Start task
+      startTask(task);
+    }
+  }
+
+  function onStopGroupTasks(event) {
+    // Extract group name
+    const group = event.detail.group_name;
+
+    // Loop through tasks
+    for (var task of tasks) {
+      // Skip if not part of group
+      if (!task.groups.includes(group)) {
         continue;
       }
 
@@ -245,6 +283,10 @@
     // Update log
     log = log + nowString + " " + message + "\n";
   }
+
+  function printGroup(event) {
+    console.log(event.detail.group_name);
+  }
 </script>
 
 <main>
@@ -262,6 +304,11 @@
         {tasks}
         on:selectTask={onSelectTask}
         on:toggleTask={onToggleTask}
+      />
+      <GroupsList
+        {groups}
+        on:startGroup={onStartGroupTasks}
+        on:stopGroup={onStopGroupTasks}
       />
       <p class="button-row">
         <NiceButton on:click={onStartAllTasks} text="Start All" />
