@@ -91,6 +91,11 @@
   }
 
   function startTask(task) {
+    // Skip if task is already running
+    if (task.running) {
+      return;
+    }
+
     // Set task flag to started
     task.running = true;
 
@@ -102,6 +107,11 @@
   }
 
   function stopTask(task) {
+    // Skip if task is already stopped
+    if (!task.running) {
+      return;
+    }
+
     // Set task flag to stopped
     task.running = false;
 
@@ -198,11 +208,6 @@
   function onStartAllTasks() {
     // Loop through tasks
     for (var task of tasks) {
-      // Skip if task is already running
-      if (task.running) {
-        continue;
-      }
-
       // Start task
       startTask(task);
     }
@@ -211,11 +216,6 @@
   function onStopAllTasks() {
     // Loop through tasks
     for (var task of tasks) {
-      // Skip if task is already stopped
-      if (!task.running) {
-        continue;
-      }
-
       // Stop task
       stopTask(task);
     }
@@ -232,11 +232,6 @@
         continue;
       }
 
-      // Skip if task is already running
-      if (task.running) {
-        continue;
-      }
-
       // Start task
       startTask(task);
     }
@@ -250,11 +245,6 @@
     for (var task of tasks) {
       // Skip if not part of group
       if (!task.groups.includes(group)) {
-        continue;
-      }
-
-      // Skip if task is already stopped
-      if (!task.running) {
         continue;
       }
 
