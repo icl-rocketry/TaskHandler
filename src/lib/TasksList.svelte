@@ -6,7 +6,6 @@
   import { createEventDispatcher } from "svelte";
 
   // Internal imports
-  import NiceButton from "./NiceButton.svelte";
   import TaskButton from "./TaskButton.svelte";
   import ToggleButton from "./ToggleButton.svelte";
 
@@ -14,8 +13,10 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<div class="taskListDiv">
+<div class="taskListTitle">
   <h3>Tasks</h3>
+</div>
+<div class="taskListDiv">
   <table class="tasktable">
     {#each tasks as task}
       <tr>
@@ -37,9 +38,9 @@
         <td>
           <div class="stats">
             <div class="labelwidth">
-              tx
+              Tx
               <br />
-              rx
+              Rx
             </div>
             <div class="counterwidth">
               {task.txCounter}
@@ -58,12 +59,11 @@
     list-style-type: none;
     padding: 0;
     text-align: center;
-    border: 1px solid #ccc;
     width: 100%;
   }
   .taskListDiv {
     border: 1px solid #ccc;
-    height: 40vh;
+    height: 45vh;
     overflow: auto;
   }
   .stats {

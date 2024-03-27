@@ -280,21 +280,27 @@
 </script>
 
 <main>
+  <div class="title-container">
+    <div>
+      <img src={iclrLogo} class="logo" alt="Vite Logo" />
+    </div>
+    <div class="title">
+      <h1>Task Handler</h1>
+    </div>
+  </div>
   <div class="container">
     <div class="left">
-      <div>
-        <img src={iclrLogo} class="logo" alt="Vite Logo" />
-      </div>
-      <h1>Task Handler UI</h1>
-      <p class="button-row">
-        <NiceButton on:click={onRefreshTasks} text="Force Refresh" />
-        <NiceButton on:click={onClearTasks} text="Clear Tasks" />
-      </p>
       <TasksList
         {tasks}
         on:selectTask={onSelectTask}
         on:toggleTask={onToggleTask}
       />
+      <p class="button-row">
+        <NiceButton on:click={onRefreshTasks} text="Force Refresh" />
+        <NiceButton on:click={onClearTasks} text="Clear Tasks" />
+      </p>
+    </div>
+    <div class="right">
       <GroupsList
         {groups}
         on:startGroup={onStartGroupTasks}
@@ -305,14 +311,14 @@
         <NiceButton on:click={onStopAllTasks} text="Stop All" />
       </p>
     </div>
-    <div class="right">
-      <JSONEditor bind:value={taskCopy} />
-      <NiceButton on:click={onSaveTask} text="Save to disk" />
-      <NiceButton on:click={onNewTask} text="New Task" />
-      <NiceButton on:click={onUpdateTask} text="Push Task" />
-      <NiceButton on:click={onDeleteTask} text="Delete" />
-    </div>
   </div>
+  <JSONEditor bind:value={taskCopy} />
+  <p class="button-row">
+    <NiceButton on:click={onSaveTask} text="Save to disk" />
+    <NiceButton on:click={onNewTask} text="New Task" />
+    <NiceButton on:click={onUpdateTask} text="Push Task" />
+    <NiceButton on:click={onDeleteTask} text="Delete" />
+  </p>
   <ConsoleBox value={log} />
 </main>
 
@@ -330,16 +336,28 @@
     display: flex;
     justify-content: center;
   }
+  .title {
+    margin-left: 2em;
+  }
+  .title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+  }
   .button-row {
     margin-top: 6pt;
     margin-bottom: 6pt;
   }
   .left {
-    margin-right: 2vw;
-    width: 30vw;
+    margin-left: 0vw;
+    margin-right: 1vw;
+    width: 100%;
   }
   .right {
-    width: auto;
+    margin-left: 1vw;
+    margin-right: 0vw;
+    width: 100%;
   }
   :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

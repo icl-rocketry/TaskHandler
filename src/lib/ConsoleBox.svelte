@@ -39,7 +39,7 @@
 <style>
   .errorListDiv {
     border: 1px solid #ccc;
-    height: 10vh;
+    height: 15vh;
     overflow: auto;
     color: white;
     text-align: left;
