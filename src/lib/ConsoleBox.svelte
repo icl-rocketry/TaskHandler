@@ -9,7 +9,7 @@
   let div;
 
   // Declare autoscroll boolean
-  let autoscroll = false;
+  let autoscroll = true;
 
   beforeUpdate(() => {
     // Check for div
@@ -40,8 +40,11 @@
   .errorListDiv {
     border: 1px solid #ccc;
     height: 15vh;
-    overflow: auto;
+    overflow-y: scroll;
+    scrollbar-width: thin;
     color: white;
     text-align: left;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 </style>
