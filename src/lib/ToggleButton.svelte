@@ -27,6 +27,7 @@
     font-family: inherit;
     cursor: pointer;
     transition: border-color 0.25s;
+    color: rgba(255, 255, 255, 0.87);
   }
   button:hover {
     border-color: #646cff;
