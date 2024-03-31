@@ -13,7 +13,7 @@
     animation: blinking 0.5s infinite;
   }
   button {
-    width: 150px;
+    width: 200px;
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;

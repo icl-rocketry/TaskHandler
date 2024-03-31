@@ -18,7 +18,7 @@
     background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
-    min-width: 150px;
+    min-width: 125px;
   }
   button:hover {
     border-color: #646cff;

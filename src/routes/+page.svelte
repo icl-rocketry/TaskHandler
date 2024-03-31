@@ -26,6 +26,12 @@
   // Declare socket variable
   let socket;
 
+  // Declare connection flag
+  let isConnected = false;
+
+  // Define reactive connection status string, based on toggle state
+  $: connectionStatus = isConnected ? "Connected" : "Not Connected";
+
   // Declare polling variables
   let poll_interval;
   let poll_time = 0;
@@ -57,8 +63,24 @@
 
     // Set connection callback
     socket.on("connect", () => {
+      // Update connection status
+      isConnected = true;
+
       // Start polling task (repeats every 1 ms)
       poll_interval = setInterval(checkDeltaPoll, 1);
+    });
+
+    // Set connection callback
+    socket.on("disconnect", () => {
+      // Update connection status
+      isConnected = false;
+
+      // Stop polling task
+      clearInterval(poll_interval);
+
+      // Clear tasks and groups
+      tasks = [];
+      groups = [];
     });
 
     // Set running tasks callback
@@ -288,8 +310,8 @@
       <h1>Task Handler</h1>
     </div>
   </div>
-  <div class="container">
-    <div class="left">
+  <div class="row">
+    <div class="column">
       <TasksList
         {tasks}
         on:selectTask={onSelectTask}
@@ -300,7 +322,7 @@
         <NiceButton on:click={onClearTasks} text="Clear Tasks" />
       </p>
     </div>
-    <div class="right">
+    <div class="column">
       <GroupsList
         {groups}
         on:startGroup={onStartGroupTasks}
@@ -332,10 +354,6 @@
   .logo:hover {
     filter: drop-shadow(0 0 2em #646cffaa);
   }
-  .container {
-    display: flex;
-    justify-content: center;
-  }
   .title {
     margin-left: 2em;
   }
@@ -349,15 +367,19 @@
     margin-top: 6pt;
     margin-bottom: 6pt;
   }
-  .left {
-    margin-left: 0vw;
-    margin-right: 1vw;
-    width: 100%;
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
   }
-  .right {
-    margin-left: 1vw;
-    margin-right: 0vw;
-    width: 100%;
+  .column {
+    float: left;
+    width: 50%;
+  }
+  @media screen and (max-width: 900px) {
+    .column {
+      width: 100%;
+    }
   }
   :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

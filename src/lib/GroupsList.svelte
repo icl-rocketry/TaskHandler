@@ -25,13 +25,13 @@
         <td>
           <NiceButton
             on:click={() => dispatch("startGroup", { group_name: group })}
-            text="Start Group"
+            text="Start"
           />
         </td>
         <td>
           <NiceButton
             on:click={() => dispatch("stopGroup", { group_name: group })}
-            text="Stop Group"
+            text="Stop"
           />
         </td>
       </tr>
@@ -48,7 +48,9 @@
   }
   .taskListDiv {
     border: 1px solid #ccc;
-    height: 45vh;
-    overflow: auto;
+    /* height: 45vh; */
+    /* overflow: auto; */
+    width: fit-content;
+    display: inline-block;
   }
 </style>

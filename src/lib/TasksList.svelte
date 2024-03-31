@@ -63,8 +63,10 @@
   }
   .taskListDiv {
     border: 1px solid #ccc;
-    height: 45vh;
-    overflow: auto;
+    /* height: 45vh; */
+    /* overflow: auto; */
+    width: fit-content;
+    display: inline-block;
   }
   .stats {
     font-size: 14px;
