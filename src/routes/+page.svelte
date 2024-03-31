@@ -63,6 +63,9 @@
 
     // Set connection callback
     socket.on("connect", () => {
+      // Log connection
+      updateLog("Connected to backend");
+
       // Update connection status
       isConnected = true;
 
@@ -72,6 +75,9 @@
 
     // Set connection callback
     socket.on("disconnect", () => {
+      // Log disconnection
+      updateLog("Disconnected from backend");
+
       // Update connection status
       isConnected = false;
 
@@ -293,8 +299,11 @@
   }
 
   function updateLog(message) {
+    // Get current date
+    const date = new Date();
+
     // Generate current time string
-    const nowString = "[" + new Date().toLocaleTimeString() + "]";
+    const nowString = "[" + date.toLocaleTimeString() + "]";
 
     // Update log
     log = log + nowString + " " + message + "\n";
