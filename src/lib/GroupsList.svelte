@@ -16,27 +16,33 @@
   <h3>Task Groups</h3>
 </div>
 <div class="taskListDiv">
-  <table class="tasktable">
-    {#each groups as group}
-      <tr>
-        <td>
-          <NiceButton on:click={() => {}} text={group} />
-        </td>
-        <td>
-          <NiceButton
-            on:click={() => dispatch("startGroup", { group_name: group })}
-            text="Start"
-          />
-        </td>
-        <td>
-          <NiceButton
-            on:click={() => dispatch("stopGroup", { group_name: group })}
-            text="Stop"
-          />
-        </td>
-      </tr>
-    {/each}
-  </table>
+  {#if groups.length}
+    <table class="tasktable">
+      {#each groups as group}
+        <tr>
+          <td>
+            <NiceButton on:click={() => {}} text={group} />
+          </td>
+          <td>
+            <NiceButton
+              on:click={() => dispatch("startGroup", { group_name: group })}
+              text="Start"
+            />
+          </td>
+          <td>
+            <NiceButton
+              on:click={() => dispatch("stopGroup", { group_name: group })}
+              text="Stop"
+            />
+          </td>
+        </tr>
+      {/each}
+    </table>
+  {:else}
+    <div class="errorMessage">
+      <h5>No groups available</h5>
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -52,5 +58,10 @@
     /* overflow: auto; */
     width: fit-content;
     display: inline-block;
+  }
+  .errorMessage {
+    text-align: center;
+    padding-left: 5rem;
+    padding-right: 5rem;
   }
 </style>
