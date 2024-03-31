@@ -54,8 +54,9 @@
   }
   .taskListDiv {
     border: 1px solid #ccc;
-    /* height: 45vh; */
-    /* overflow: auto; */
+    max-height: 45vh;
+    overflow-y: scroll;
+    scrollbar-width: thin;
     width: fit-content;
     display: inline-block;
   }

@@ -321,35 +321,39 @@
   </div>
   <div class="row">
     <div class="column">
-      <TasksList
-        {tasks}
-        on:selectTask={onSelectTask}
-        on:toggleTask={onToggleTask}
-      />
-      <p class="button-row">
-        <NiceButton on:click={onRefreshTasks} text="Force Refresh" />
-        <NiceButton on:click={onClearTasks} text="Clear Tasks" />
-      </p>
+      <div>
+        <TasksList
+          {tasks}
+          on:selectTask={onSelectTask}
+          on:toggleTask={onToggleTask}
+        />
+        <p class="button-row">
+          <NiceButton on:click={onRefreshTasks} text="Force Refresh" />
+          <NiceButton on:click={onClearTasks} text="Clear Tasks" />
+        </p>
+      </div>
+      <div>
+        <GroupsList
+          {groups}
+          on:startGroup={onStartGroupTasks}
+          on:stopGroup={onStopGroupTasks}
+        />
+        <p class="button-row">
+          <NiceButton on:click={onStartAllTasks} text="Start All" />
+          <NiceButton on:click={onStopAllTasks} text="Stop All" />
+        </p>
+      </div>
     </div>
     <div class="column">
-      <GroupsList
-        {groups}
-        on:startGroup={onStartGroupTasks}
-        on:stopGroup={onStopGroupTasks}
-      />
+      <JSONEditor bind:value={taskCopy} />
       <p class="button-row">
-        <NiceButton on:click={onStartAllTasks} text="Start All" />
-        <NiceButton on:click={onStopAllTasks} text="Stop All" />
+        <NiceButton on:click={onSaveTask} text="Save to disk" />
+        <NiceButton on:click={onNewTask} text="New Task" />
+        <NiceButton on:click={onUpdateTask} text="Push Task" />
+        <NiceButton on:click={onDeleteTask} text="Delete" />
       </p>
     </div>
   </div>
-  <JSONEditor bind:value={taskCopy} />
-  <p class="button-row">
-    <NiceButton on:click={onSaveTask} text="Save to disk" />
-    <NiceButton on:click={onNewTask} text="New Task" />
-    <NiceButton on:click={onUpdateTask} text="Push Task" />
-    <NiceButton on:click={onDeleteTask} text="Delete" />
-  </p>
   <ConsoleBox value={log} />
 </main>
 
