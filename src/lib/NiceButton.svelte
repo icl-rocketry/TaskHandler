@@ -15,10 +15,11 @@
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
+    color: rgba(255, 255, 255, 0.87);
     background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
-    min-width: 150px;
+    min-width: 125px;
   }
   button:hover {
     border-color: #646cff;

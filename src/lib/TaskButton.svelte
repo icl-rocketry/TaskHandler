@@ -13,7 +13,7 @@
     animation: blinking 0.5s infinite;
   }
   button {
-    width: 150px;
+    width: 200px;
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
@@ -23,6 +23,7 @@
     cursor: pointer;
     transition: border-color 0.25s;
     background-color: #1a1a1a;
+    color: rgba(255, 255, 255, 0.87);
   }
   button:hover {
     border-color: #646cff;

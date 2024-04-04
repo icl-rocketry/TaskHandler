@@ -3,7 +3,7 @@
   export let toggle;
 
   // Define reactive running string, based on toggle state
-  $: running = toggle ? "Running" : "Not Running";
+  $: running = toggle ? "Started" : "Stopped";
 </script>
 
 <button on:click class={toggle}>
@@ -18,7 +18,7 @@
     background-color: red;
   }
   button {
-    width: 150px;
+    width: 100px;
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
@@ -27,6 +27,7 @@
     font-family: inherit;
     cursor: pointer;
     transition: border-color 0.25s;
+    color: rgba(255, 255, 255, 0.87);
   }
   button:hover {
     border-color: #646cff;

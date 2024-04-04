@@ -17,33 +17,41 @@
       taskname = JSON.parse(value).task_name;
     } catch {
       // Set error task name
-      taskname = "Not valid JSON";
+      taskname = "None";
     }
   }
 </script>
 
+<div class="jsonTitle">
+  <h3>Task Editor</h3>
+  <p>Currently editing: {taskname}</p>
+</div>
 <div class="jsonEditorDiv">
-  <div class="jsonTitle">Currently Editing: {taskname}</div>
   <CodeMirror
     bind:value
     lang={json()}
     theme={oneDark}
     styles={{
       "&": {
-        width: "40vw",
-        height: "70vh",
+        width: "100%",
+        height: "100vh",
       },
     }}
   />
 </div>
 
 <style>
+  h3 {
+    margin-bottom: 0rem;
+  }
+  p {
+    margin-top: 0.25rem;
+  }
   .jsonTitle {
     text-align: center;
-    margin-bottom: 6pt;
   }
   .jsonEditorDiv {
-    padding: 20px;
     text-align: left;
+    border: 1px solid #ccc;
   }
 </style>

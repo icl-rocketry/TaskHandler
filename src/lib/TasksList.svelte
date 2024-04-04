@@ -6,7 +6,6 @@
   import { createEventDispatcher } from "svelte";
 
   // Internal imports
-  import NiceButton from "./NiceButton.svelte";
   import TaskButton from "./TaskButton.svelte";
   import ToggleButton from "./ToggleButton.svelte";
 
@@ -14,43 +13,51 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<div class="taskListDiv">
+<div class="taskListTitle">
   <h3>Tasks</h3>
-  <table class="tasktable">
-    {#each tasks as task}
-      <tr>
-        <td>
-          <TaskButton
-            on:click={() =>
-              dispatch("selectTask", { task_name: task.task_name })}
-            text={task.task_name}
-            connected={task.connected}
-          />
-        </td>
-        <td>
-          <ToggleButton
-            on:click={() =>
-              dispatch("toggleTask", { task_name: task.task_name })}
-            toggle={task.running}
-          />
-        </td>
-        <td>
-          <div class="stats">
-            <div class="labelwidth">
-              tx
-              <br />
-              rx
+</div>
+<div class="taskListDiv">
+  {#if tasks.length}
+    <table class="tasktable">
+      {#each tasks as task}
+        <tr>
+          <td>
+            <TaskButton
+              on:click={() =>
+                dispatch("selectTask", { task_name: task.task_name })}
+              text={task.task_name}
+              connected={task.connected}
+            />
+          </td>
+          <td>
+            <ToggleButton
+              on:click={() =>
+                dispatch("toggleTask", { task_name: task.task_name })}
+              toggle={task.running}
+            />
+          </td>
+          <td>
+            <div class="stats">
+              <div class="labelwidth">
+                Tx
+                <br />
+                Rx
+              </div>
+              <div class="counterwidth">
+                {task.txCounter}
+                <br />
+                {task.rxCounter}
+              </div>
             </div>
-            <div class="counterwidth">
-              {task.txCounter}
-              <br />
-              {task.rxCounter}
-            </div>
-          </div>
-        </td>
-      </tr>
-    {/each}
-  </table>
+          </td>
+        </tr>
+      {/each}
+    </table>
+  {:else}
+    <div class="errorMessage">
+      <h5>No tasks available</h5>
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -58,13 +65,15 @@
     list-style-type: none;
     padding: 0;
     text-align: center;
-    border: 1px solid #ccc;
     width: 100%;
   }
   .taskListDiv {
     border: 1px solid #ccc;
-    height: 40vh;
-    overflow: auto;
+    max-height: 45vh;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    width: fit-content;
+    display: inline-block;
   }
   .stats {
     font-size: 14px;
@@ -79,5 +88,10 @@
   .counterwidth {
     width: 90px;
     text-align: left;
+  }
+  .errorMessage {
+    text-align: center;
+    padding-left: 5rem;
+    padding-right: 5rem;
   }
 </style>

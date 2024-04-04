@@ -7,6 +7,7 @@
 
   // Internal imports
   import ConsoleBox from "$lib/ConsoleBox.svelte";
+  import GroupsList from "$lib/GroupsList.svelte";
   import JSONEditor from "$lib/JSONEditor.svelte";
   import NiceButton from "$lib/NiceButton.svelte";
   import TasksList from "$lib/TasksList.svelte";
@@ -17,12 +18,19 @@
 
   // Declare list for tasks
   let tasks = [];
+  let groups = [];
 
   // Declare string for selected task contents
   let taskCopy = "Click on a task to edit it";
 
   // Declare socket variable
   let socket;
+
+  // Declare connection flag
+  let isConnected = false;
+
+  // Define reactive connection status string, based on toggle state
+  $: connectionStatus = isConnected ? "Connected" : "Not Connected";
 
   // Declare polling variables
   let poll_interval;
@@ -55,14 +63,39 @@
 
     // Set connection callback
     socket.on("connect", () => {
+      // Log connection
+      updateLog("Connected to backend");
+
+      // Update connection status
+      isConnected = true;
+
       // Start polling task (repeats every 1 ms)
       poll_interval = setInterval(checkDeltaPoll, 1);
+    });
+
+    // Set connection callback
+    socket.on("disconnect", () => {
+      // Log disconnection
+      updateLog("Disconnected from backend");
+
+      // Update connection status
+      isConnected = false;
+
+      // Stop polling task
+      clearInterval(poll_interval);
+
+      // Clear tasks and groups
+      tasks = [];
+      groups = [];
     });
 
     // Set running tasks callback
     socket.on("runningTasks", (data) => {
       // Update tasks
       tasks = data;
+
+      // Update groups
+      groups = [...new Set(tasks.map((task) => task.groups).flat())].sort();
 
       // Update last poll time
       poll_time = Date.now();
@@ -85,6 +118,11 @@
   }
 
   function startTask(task) {
+    // Skip if task is already running
+    if (task.running) {
+      return;
+    }
+
     // Set task flag to started
     task.running = true;
 
@@ -96,6 +134,11 @@
   }
 
   function stopTask(task) {
+    // Skip if task is already stopped
+    if (!task.running) {
+      return;
+    }
+
     // Set task flag to stopped
     task.running = false;
 
@@ -104,6 +147,17 @@
 
     // Log task stop
     updateLog("Stopped task " + task.task_name);
+  }
+
+  function toggleTask(task) {
+    // Check if the task is running
+    if (task.running) {
+      // Stop task
+      stopTask(task);
+    } else {
+      // Start task
+      startTask(task);
+    }
   }
 
   function onToggleTask(event) {
@@ -115,14 +169,8 @@
     // Extract task from task list
     var task = tasks[taskIndex];
 
-    // Check if the task is running
-    if (task.running) {
-      // Stop task
-      stopTask(task);
-    } else {
-      // Start task
-      startTask(task);
-    }
+    // Toggle the task
+    toggleTask(task);
   }
 
   function onRefreshTasks() {
@@ -192,16 +240,6 @@
   function onStartAllTasks() {
     // Loop through tasks
     for (var task of tasks) {
-      // Skip if task not grouped
-      if (!task.grouped) {
-        continue;
-      }
-
-      // Skip if task is already running
-      if (task.running) {
-        continue;
-      }
-
       // Start task
       startTask(task);
     }
@@ -210,13 +248,35 @@
   function onStopAllTasks() {
     // Loop through tasks
     for (var task of tasks) {
-      // Skip if task not grouped
-      if (!task.grouped) {
+      // Stop task
+      stopTask(task);
+    }
+  }
+
+  function onStartGroupTasks(event) {
+    // Extract group name
+    const group = event.detail.group_name;
+
+    // Loop through tasks
+    for (var task of tasks) {
+      // Skip if not part of group
+      if (!task.groups.includes(group)) {
         continue;
       }
 
-      // Skip if task is already stopped
-      if (!task.running) {
+      // Start task
+      startTask(task);
+    }
+  }
+
+  function onStopGroupTasks(event) {
+    // Extract group name
+    const group = event.detail.group_name;
+
+    // Loop through tasks
+    for (var task of tasks) {
+      // Skip if not part of group
+      if (!task.groups.includes(group)) {
         continue;
       }
 
@@ -239,8 +299,11 @@
   }
 
   function updateLog(message) {
+    // Get current date
+    const date = new Date();
+
     // Generate current time string
-    const nowString = "[" + new Date().toLocaleTimeString() + "]";
+    const nowString = "[" + date.toLocaleTimeString() + "]";
 
     // Update log
     log = log + nowString + " " + message + "\n";
@@ -248,32 +311,47 @@
 </script>
 
 <main>
-  <div class="container">
-    <div class="left">
-      <div>
-        <img src={iclrLogo} class="logo" alt="Vite Logo" />
-      </div>
-      <h1>Task Handler UI</h1>
-      <p class="button-row">
-        <NiceButton on:click={onRefreshTasks} text="Force Refresh" />
-        <NiceButton on:click={onClearTasks} text="Clear Tasks" />
-      </p>
-      <TasksList
-        {tasks}
-        on:selectTask={onSelectTask}
-        on:toggleTask={onToggleTask}
-      />
-      <p class="button-row">
-        <NiceButton on:click={onStartAllTasks} text="Start All" />
-        <NiceButton on:click={onStopAllTasks} text="Stop All" />
-      </p>
+  <div class="title-container">
+    <div>
+      <img src={iclrLogo} class="logo" alt="Vite Logo" />
     </div>
-    <div class="right">
+    <div class="title">
+      <h1>Task Handler</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="column">
+      <div>
+        <TasksList
+          {tasks}
+          on:selectTask={onSelectTask}
+          on:toggleTask={onToggleTask}
+        />
+        <p class="button-row">
+          <NiceButton on:click={onRefreshTasks} text="Force Refresh" />
+          <NiceButton on:click={onClearTasks} text="Clear Tasks" />
+        </p>
+      </div>
+      <div>
+        <GroupsList
+          {groups}
+          on:startGroup={onStartGroupTasks}
+          on:stopGroup={onStopGroupTasks}
+        />
+        <p class="button-row">
+          <NiceButton on:click={onStartAllTasks} text="Start All" />
+          <NiceButton on:click={onStopAllTasks} text="Stop All" />
+        </p>
+      </div>
+    </div>
+    <div class="column">
       <JSONEditor bind:value={taskCopy} />
-      <NiceButton on:click={onSaveTask} text="Save to disk" />
-      <NiceButton on:click={onNewTask} text="New Task" />
-      <NiceButton on:click={onUpdateTask} text="Push Task" />
-      <NiceButton on:click={onDeleteTask} text="Delete" />
+      <p class="button-row">
+        <NiceButton on:click={onSaveTask} text="Save to disk" />
+        <NiceButton on:click={onNewTask} text="New Task" />
+        <NiceButton on:click={onUpdateTask} text="Push Task" />
+        <NiceButton on:click={onDeleteTask} text="Delete" />
+      </p>
     </div>
   </div>
   <ConsoleBox value={log} />
@@ -289,20 +367,32 @@
   .logo:hover {
     filter: drop-shadow(0 0 2em #646cffaa);
   }
-  .container {
+  .title {
+    margin-left: 2em;
+  }
+  .title-container {
     display: flex;
+    align-items: center;
     justify-content: center;
+    margin-bottom: 1em;
   }
   .button-row {
     margin-top: 6pt;
     margin-bottom: 6pt;
   }
-  .left {
-    margin-right: 2vw;
-    width: 30vw;
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
   }
-  .right {
-    width: auto;
+  .column {
+    float: left;
+    width: 50%;
+  }
+  @media screen and (max-width: 900px) {
+    .column {
+      width: 100%;
+    }
   }
   :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
