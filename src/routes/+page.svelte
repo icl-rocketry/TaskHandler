@@ -18,7 +18,9 @@
 
   // Declare list for tasks
   let tasks = [];
-  let groups = [];
+
+  // Declare reactive list for groups
+  $: groups = [...new Set(tasks.map((task) => task.groups).flat())].sort();
 
   // Declare string for selected task contents
   let taskCopy = "Click on a task to edit it";
@@ -84,18 +86,14 @@
       // Stop polling task
       clearInterval(poll_interval);
 
-      // Clear tasks and groups
+      // Clear tasks
       tasks = [];
-      groups = [];
     });
 
     // Set running tasks callback
     socket.on("runningTasks", (data) => {
       // Update tasks
       tasks = data;
-
-      // Update groups
-      groups = [...new Set(tasks.map((task) => task.groups).flat())].sort();
 
       // Update last poll time
       poll_time = Date.now();
