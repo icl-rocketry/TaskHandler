@@ -369,7 +369,9 @@
       </p>
     </div>
   </div>
-  <ConsoleBox value={log} />
+  <div>
+    <ConsoleBox value={log} />
+  </div>
 </main>
 
 <style>
