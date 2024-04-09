@@ -10,6 +10,7 @@
   import GroupsList from "$lib/GroupsList.svelte";
   import JSONEditor from "$lib/JSONEditor.svelte";
   import NiceButton from "$lib/NiceButton.svelte";
+  import StatsList from "$lib/StatsList.svelte";
   import TasksList from "$lib/TasksList.svelte";
 
   // Internal asset imports
@@ -40,6 +41,19 @@
 
   // Declare string for log messages
   let log = "";
+
+  // Declare reactive statistics object
+  $: statistics = {
+    rxCounterTotal: tasks.map((task) => task.rxCounter).reduce(sum, 0),
+    txCounterTotal: tasks.map((task) => task.txCounter).reduce(sum, 0),
+    rxBytesTotal: tasks.map((task) => task.rxBytes).reduce(sum, 0),
+    txBytesTotal: tasks.map((task) => task.txBytes).reduce(sum, 0),
+  };
+
+  function sum(accumulator, value) {
+    // Return accumulated value
+    return accumulator + value;
+  }
 
   function checkDeltaPoll() {
     // Check if sufficient time has passed since the last poll (100 ms)
@@ -340,6 +354,9 @@
           <NiceButton on:click={onStartAllTasks} text="Start All" />
           <NiceButton on:click={onStopAllTasks} text="Stop All" />
         </p>
+      </div>
+      <div>
+        <StatsList {statistics} />
       </div>
     </div>
     <div class="column">
