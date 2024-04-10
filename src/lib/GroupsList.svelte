@@ -47,6 +47,7 @@
 
 <style>
   .tasktable {
+    background-color: #282c34;
     list-style-type: none;
     padding: 0;
     text-align: center;
