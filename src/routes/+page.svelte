@@ -10,6 +10,7 @@
   import GroupsList from "$lib/GroupsList.svelte";
   import JSONEditor from "$lib/JSONEditor.svelte";
   import NiceButton from "$lib/NiceButton.svelte";
+  import StatsList from "$lib/StatsList.svelte";
   import TasksList from "$lib/TasksList.svelte";
 
   // Internal asset imports
@@ -18,7 +19,9 @@
 
   // Declare list for tasks
   let tasks = [];
-  let groups = [];
+
+  // Declare reactive list for groups
+  $: groups = [...new Set(tasks.map((task) => task.groups).flat())].sort();
 
   // Declare string for selected task contents
   let taskCopy = "Click on a task to edit it";
@@ -38,6 +41,19 @@
 
   // Declare string for log messages
   let log = "";
+
+  // Declare reactive statistics object
+  $: statistics = {
+    rxCounterTotal: tasks.map((task) => task.rxCounter).reduce(sum, 0),
+    txCounterTotal: tasks.map((task) => task.txCounter).reduce(sum, 0),
+    rxBytesTotal: tasks.map((task) => task.rxBytes).reduce(sum, 0),
+    txBytesTotal: tasks.map((task) => task.txBytes).reduce(sum, 0),
+  };
+
+  function sum(accumulator, value) {
+    // Return accumulated value
+    return accumulator + value;
+  }
 
   function checkDeltaPoll() {
     // Check if sufficient time has passed since the last poll (100 ms)
@@ -84,18 +100,14 @@
       // Stop polling task
       clearInterval(poll_interval);
 
-      // Clear tasks and groups
+      // Clear tasks
       tasks = [];
-      groups = [];
     });
 
     // Set running tasks callback
     socket.on("runningTasks", (data) => {
       // Update tasks
       tasks = data;
-
-      // Update groups
-      groups = [...new Set(tasks.map((task) => task.groups).flat())].sort();
 
       // Update last poll time
       poll_time = Date.now();
@@ -343,6 +355,9 @@
           <NiceButton on:click={onStopAllTasks} text="Stop All" />
         </p>
       </div>
+      <div>
+        <StatsList {statistics} />
+      </div>
     </div>
     <div class="column">
       <JSONEditor bind:value={taskCopy} />
@@ -354,7 +369,9 @@
       </p>
     </div>
   </div>
-  <ConsoleBox value={log} />
+  <div>
+    <ConsoleBox value={log} />
+  </div>
 </main>
 
 <style>
@@ -396,7 +413,6 @@
   }
   :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
     font-weight: 400;
 
     color-scheme: light dark;

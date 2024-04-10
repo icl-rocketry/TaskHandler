@@ -11,9 +11,15 @@
 
   // Create event dispatcher
   const dispatch = createEventDispatcher();
+
+  function formatThousandDelimited(value) {
+    // Return value with spaces per thousand
+    // Solution from: https://stackoverflow.com/a/16637170
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  }
 </script>
 
-<div class="taskListTitle">
+<div>
   <h3>Tasks</h3>
 </div>
 <div class="taskListDiv">
@@ -37,18 +43,20 @@
             />
           </td>
           <td>
-            <div class="stats">
-              <div class="labelwidth">
-                Tx
-                <br />
-                Rx
-              </div>
-              <div class="counterwidth">
-                {task.txCounter}
-                <br />
-                {task.rxCounter}
-              </div>
-            </div>
+            <table class="statsTable">
+              <tr>
+                <td> Tx </td>
+                <td class="statsColumn">
+                  {formatThousandDelimited(task.txCounter)}
+                </td>
+              </tr>
+              <tr>
+                <td> Rx </td>
+                <td class="statsColumn">
+                  {formatThousandDelimited(task.rxCounter)}
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
       {/each}
@@ -62,8 +70,9 @@
 
 <style>
   .tasktable {
+    background-color: #282c34;
     list-style-type: none;
-    padding: 0;
+    padding: 0.2rem;
     text-align: center;
     width: 100%;
   }
@@ -75,19 +84,17 @@
     width: fit-content;
     display: inline-block;
   }
-  .stats {
+  .statsColumn {
+    min-width: 6rem;
+    width: 100%;
+    text-align: right;
+  }
+  .statsTable {
     font-size: 14px;
     background-color: #1a1a1a;
-    display: flex;
-    justify-content: flex-start;
-  }
-  .labelwidth {
-    width: 10px;
-    padding-right: 10px;
-  }
-  .counterwidth {
-    width: 90px;
     text-align: left;
+    border-radius: 8px;
+    border-spacing: 0.1rem 0;
   }
   .errorMessage {
     text-align: center;
