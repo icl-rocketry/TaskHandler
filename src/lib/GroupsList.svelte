@@ -1,12 +1,14 @@
 <script>
   // Export groups list
   export let groups;
+  export let groupFilter;
 
   // Standard imports
   import { createEventDispatcher } from "svelte";
 
   // Internal imports
   import NiceButton from "./NiceButton.svelte";
+  import ToggleButton from "./ToggleButton.svelte";
 
   // Create event dispatcher
   const dispatch = createEventDispatcher();
@@ -21,7 +23,15 @@
       {#each groups as group}
         <tr>
           <td>
-            <NiceButton on:click={() => {}} text={group} />
+            <ToggleButton
+              on:click={() => dispatch("filterGroup", { group_name: group })}
+              toggle={groupFilter == group}
+              text={{ true: group, false: group }}
+              styles={{
+                trueColour: "navy",
+                falseColour: "#1a1a1a",
+              }}
+            />
           </td>
           <td>
             <NiceButton
@@ -55,7 +65,7 @@
   }
   .taskListDiv {
     border: 1px solid #ccc;
-    max-height: 45vh;
+    height: 45vh;
     overflow-y: scroll;
     scrollbar-width: thin;
     width: fit-content;

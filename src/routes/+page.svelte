@@ -20,8 +20,14 @@
   // Declare list for tasks
   let tasks = [];
 
+  // Declare group filter
+  let groupFilter = "";
+
   // Declare reactive list for groups
-  $: groups = [...new Set(tasks.map((task) => task.groups).flat())].sort();
+  // NOTE: sorting by lowercase form
+  $: groups = [...new Set(tasks.map((task) => task.groups).flat())].sort(
+    (a, b) => (a.toLowerCase() < b.toLowerCase() ? -1 : 1),
+  );
 
   // Declare string for selected task contents
   let taskCopy = "Click on a task to edit it";
@@ -265,6 +271,14 @@
     }
   }
 
+  function onFilterGroup(event) {
+    // Extract group name
+    const group = event.detail.group_name;
+
+    // Remove filter if group was already selected, otherwise set to new group
+    groupFilter = group == groupFilter ? "" : group;
+  }
+
   function onStartGroupTasks(event) {
     // Extract group name
     const group = event.detail.group_name;
@@ -335,7 +349,8 @@
     <div class="column">
       <div>
         <TasksList
-          {tasks}
+          tasks={tasks}
+          groupFilter={groupFilter}
           on:selectTask={onSelectTask}
           on:toggleTask={onToggleTask}
         />
@@ -346,7 +361,9 @@
       </div>
       <div>
         <GroupsList
-          {groups}
+          groups={groups}
+          groupFilter={groupFilter}
+          on:filterGroup={onFilterGroup}
           on:startGroup={onStartGroupTasks}
           on:stopGroup={onStopGroupTasks}
         />

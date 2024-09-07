@@ -1,6 +1,7 @@
 <script>
   // Export tasks list
   export let tasks;
+  export let groupFilter;
 
   // Standard imports
   import { createEventDispatcher } from "svelte";
@@ -17,15 +18,27 @@
     // Solution from: https://stackoverflow.com/a/16637170
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
+
+  // Declare variables for number of tasks running
+  $: tasksTotal = tasks.length
+  $: tasksRunning = tasks.filter((a) => a.running).length;
+
+  // Declare variables for filtered tasks
+  $: tasksFiltered = tasks
+    .filter((task) => task.groups.includes(groupFilter) || groupFilter == "")
+    .sort((a, b) =>
+      a.task_name.toLowerCase() > b.task_name.toLowerCase() ? 1 : -1,
+    );
 </script>
 
 <div>
   <h3>Tasks</h3>
+  <p>Running: {tasksRunning} / {tasksTotal}</p>
 </div>
 <div class="taskListDiv">
-  {#if tasks.length}
+  {#if tasksFiltered.length}
     <table class="tasktable">
-      {#each tasks as task}
+      {#each tasksFiltered as task}
         <tr>
           <td>
             <TaskButton
@@ -40,6 +53,11 @@
               on:click={() =>
                 dispatch("toggleTask", { task_name: task.task_name })}
               toggle={task.running}
+              text={{ true: "Running", false: "Stopped" }}
+              styles={{
+                trueColour: "green",
+                falseColour: "red",
+              }}
             />
           </td>
           <td>
@@ -77,8 +95,9 @@
     width: 100%;
   }
   .taskListDiv {
+    background-color: #282c34;
     border: 1px solid #ccc;
-    max-height: 45vh;
+    height: 45vh;
     overflow-y: scroll;
     scrollbar-width: thin;
     width: fit-content;
@@ -100,5 +119,11 @@
     text-align: center;
     padding-left: 5rem;
     padding-right: 5rem;
+  }
+  h3 {
+    margin-bottom: 0rem;
+  }
+  p {
+    margin-top: 0.25rem;
   }
 </style>

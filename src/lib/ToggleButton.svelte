@@ -2,20 +2,31 @@
   // Export button toggle state
   export let toggle;
 
+  // Export button text
+  export let text;
+
+  // Export button style
+  export let styles;
+	
+  // Define colours from styles
+	$: cssVarStyles = Object.entries(styles)
+		.map(([key, value]) => `--${key}:${value}`)
+		.join(';');
+
   // Define reactive running string, based on toggle state
-  $: running = toggle ? "Started" : "Stopped";
+  $: running = toggle ? text.true : text.false;
 </script>
 
-<button on:click class={toggle}>
+<button on:click class={toggle}  style="{cssVarStyles}">
   {running}
 </button>
 
 <style>
   .true {
-    background-color: green;
+    background-color: var(--trueColour);
   }
   .false {
-    background-color: red;
+    background-color: var(--falseColour);
   }
   button {
     width: 100px;
