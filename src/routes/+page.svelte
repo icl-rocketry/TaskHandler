@@ -21,6 +21,7 @@
   let tasks = [];
 
   // Declare group filter
+  // TODO: clear if group no longer in list of groups
   let groupFilter = "";
 
   // Declare reactive list for groups

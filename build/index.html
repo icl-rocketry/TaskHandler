@@ -5,20 +5,20 @@
 		<meta name="viewport" content="width=device-width" />
 		
 		<link href="./_app/immutable/assets/2.ec377af3.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.3394164b.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.1b280195.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/scheduler.c2edac86.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.b34fa171.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.f10880dc.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.0554dd9f.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.556ba783.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/index.42515dc6.js">
 		<link rel="modulepreload" href="./_app/immutable/nodes/0.abb49af4.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/2.6f76b201.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.da15452f.js">
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">  <main class="svelte-ygtmun"><div class="title-container svelte-ygtmun"><div><img src="/_app/immutable/assets/ICLR-LOGO.bc213050.png" class="logo svelte-ygtmun" alt="Vite Logo"></div> <div class="title svelte-ygtmun" data-svelte-h="svelte-3hrrlv"><h1 class="svelte-ygtmun">Task Handler</h1></div></div> <div class="row svelte-ygtmun"><div class="column svelte-ygtmun"><div><div><h3 class="svelte-yawetl" data-svelte-h="svelte-1lqzi48">Tasks</h3> <p class="svelte-yawetl">Running: 0 / 0</p></div> <div class="taskListDiv svelte-yawetl"><div class="errorMessage svelte-yawetl" data-svelte-h="svelte-1mrlxuf"><h5>No tasks available</h5></div> </div> <p class="button-row svelte-ygtmun"><button class="svelte-4n3qpb">Force Refresh </button> <button class="svelte-4n3qpb">Clear Tasks </button></p></div> <div><div class="taskListTitle" data-svelte-h="svelte-fz17h4"><h3>Task Groups</h3></div> <div class="taskListDiv svelte-191myps"><div class="errorMessage svelte-191myps" data-svelte-h="svelte-qy3s9t"><h5>No groups available</h5></div> </div> <p class="button-row svelte-ygtmun"><button class="svelte-4n3qpb">Start All </button> <button class="svelte-4n3qpb">Stop All </button></p></div> <div><div data-svelte-h="svelte-12xbh37"><h3>Task Statistics</h3></div> <div class="taskListDiv svelte-2m9hs7"><table class="table svelte-2m9hs7"><tr><td data-svelte-h="svelte-2asjoy">Tx</td> <td class="valuecolumn svelte-2m9hs7">0</td> <td data-svelte-h="svelte-lpw2ap">-</td></tr> <tr><td data-svelte-h="svelte-1cp854">Rx</td> <td class="valuecolumn svelte-2m9hs7">0</td> <td data-svelte-h="svelte-1jouo0v">-</td></tr> <tr><td data-svelte-h="svelte-ktamcj">ΔTx/Rx</td> <td class="valuecolumn svelte-2m9hs7">0</td> <td data-svelte-h="svelte-lpw2ap">-</td></tr> <tr><td data-svelte-h="svelte-2asjoy">Tx</td> <td class="valuecolumn svelte-2m9hs7">0</td> <td data-svelte-h="svelte-1ed974">B</td></tr> <tr><td data-svelte-h="svelte-1cp854">Rx</td> <td class="valuecolumn svelte-2m9hs7">0</td> <td data-svelte-h="svelte-1ed974">B</td></tr> <tr><td data-svelte-h="svelte-2asjoy">Tx</td> <td class="valuecolumn svelte-2m9hs7">0</td> <td data-svelte-h="svelte-1gu2ff6">B/s</td></tr> <tr><td data-svelte-h="svelte-1cp854">Rx</td> <td class="valuecolumn svelte-2m9hs7">0</td> <td data-svelte-h="svelte-1gu2ff6">B/s</td></tr></table> </div></div></div> <div class="column svelte-ygtmun"><div class="jsonTitle svelte-1bi6pug"><h3 class="svelte-1bi6pug" data-svelte-h="svelte-1k2u37g">Task Editor</h3> <p class="svelte-1bi6pug">Currently editing: None</p></div> <div class="jsonEditorDiv svelte-1bi6pug"><div class="scm-waiting  svelte-kcx0g9"><div class="scm-waiting__loading scm-loading svelte-kcx0g9" data-svelte-h="svelte-1pxusly"><div class="scm-loading__spinner svelte-kcx0g9"></div> <p class="scm-loading__text svelte-kcx0g9">Loading editor...</p></div> <pre class="scm-pre cm-editor svelte-kcx0g9">Click on a task to edit it</pre></div> </div> <p class="button-row svelte-ygtmun"><button class="svelte-4n3qpb">Save to disk </button> <button class="svelte-4n3qpb">New Task </button> <button class="svelte-4n3qpb">Push Task </button> <button class="svelte-4n3qpb">Delete </button></p></div></div> <div><h3 data-svelte-h="svelte-umilw8">Log</h3> <div class="errorListDiv svelte-1cvbcxz"><pre></pre> </div></div> </main> 
 			
 			<script>
 				{
-					__sveltekit_1qw1cb6 = {
+					__sveltekit_bxyq2n = {
 						base: new URL(".", location).pathname.slice(0, -1),
 						env: {}
 					};
@@ -28,8 +28,8 @@
 					const data = [null,null];
 
 					Promise.all([
-						import("./_app/immutable/entry/start.3394164b.js"),
-						import("./_app/immutable/entry/app.f10880dc.js")
+						import("./_app/immutable/entry/start.1b280195.js"),
+						import("./_app/immutable/entry/app.556ba783.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 2],
