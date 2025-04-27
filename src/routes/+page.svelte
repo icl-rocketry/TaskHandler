@@ -4,6 +4,7 @@
 
   // Third-party imports
   import io from "socket.io-client";
+  import { Validator } from "jsonschema";
 
   // Internal imports
   import ConsoleBox from "$lib/ConsoleBox.svelte";
@@ -14,6 +15,7 @@
   import TasksList from "$lib/TasksList.svelte";
 
   // Internal asset imports
+  import schema from "$lib/assets/DataRequestTaskSchema.json";
   import fakeJson from "$lib/assets/fakeJson.json";
   import iclrLogo from "$lib/assets/ICLR-LOGO.png";
 
@@ -48,6 +50,9 @@
 
   // Declare string for log messages
   let log = "";
+
+  // Declare schema validator
+  var validator = new Validator();
 
   // Declare reactive statistics object
   $: statistics = {
@@ -224,6 +229,30 @@
     // Parse selected task contents
     var taskObject = tryParse(taskCopy);
 
+    // Check task configuration against schema
+    var res = validator.validate(taskObject, schema);
+
+    // Check if validation failed
+    // TODO: refactor repeated code with onUpdateTask
+    if (!res.valid) {
+      // Create error message
+      var message = "Invalid task configuration. Aborting save.";
+      message += "\n\n";
+      message += "Errors:\n";
+      for (var error of res.errors) {
+        message += "-" + error.property + "\n";
+      }
+
+      // Alert user to error
+      alert(message);
+
+      // Log error
+      updateLog("Aborting save for " + taskObject.task_name);
+
+      // Abort
+      return;
+    }
+
     // Emit message to save task contents
     socket.emit("saveHandlerConfig", taskObject);
 
@@ -234,6 +263,30 @@
   function onUpdateTask() {
     // Parse selected task contents
     var taskObject = tryParse(taskCopy);
+
+    // Check task configuration against schema
+    var res = validator.validate(taskObject, schema);
+
+    // Check if validation failed
+    // TODO: refactor repeated code with onSaveTask
+    if (!res.valid) {
+      // Create error message
+      var message = "Invalid task configuration. Aborting push.";
+      message += "\n\n";
+      message += "Errors:\n";
+      for (var error of res.errors) {
+        message += "-" + error.property + "\n";
+      }
+
+      // Alert user to error
+      alert(message);
+
+      // Log error
+      updateLog("Aborting push for " + taskObject.task_name);
+
+      // Abort
+      return;
+    }
 
     // Emit message to update task configuration
     socket.emit("newTaskConfig", taskObject);
@@ -350,8 +403,8 @@
     <div class="column">
       <div>
         <TasksList
-          tasks={tasks}
-          groupFilter={groupFilter}
+          {tasks}
+          {groupFilter}
           on:selectTask={onSelectTask}
           on:toggleTask={onToggleTask}
         />
@@ -362,8 +415,8 @@
       </div>
       <div>
         <GroupsList
-          groups={groups}
-          groupFilter={groupFilter}
+          {groups}
+          {groupFilter}
           on:filterGroup={onFilterGroup}
           on:startGroup={onStartGroupTasks}
           on:stopGroup={onStopGroupTasks}
