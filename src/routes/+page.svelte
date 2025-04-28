@@ -225,6 +225,22 @@
     updateLog("Cleared all tasks");
   }
 
+  function validatorToMessage(res) {
+    // Sort errors
+    res.errors.sort((a, b) => (a.property > b.property ? 1 : -1));
+
+    // Create error message
+    var message = "Invalid task configuration. Aborting.";
+    message += "\n\n";
+    message += "Errors:\n";
+    for (var error of res.errors) {
+      message += "- " + error.property + " " + error.message + "\n";
+    }
+
+    // Return error message
+    return message;
+  }
+
   function onSaveTask() {
     // Parse selected task contents
     var taskObject = tryParse(taskCopy);
@@ -233,15 +249,9 @@
     var res = validator.validate(taskObject, schema);
 
     // Check if validation failed
-    // TODO: refactor repeated code with onUpdateTask
     if (!res.valid) {
-      // Create error message
-      var message = "Invalid task configuration. Aborting save.";
-      message += "\n\n";
-      message += "Errors:\n";
-      for (var error of res.errors) {
-        message += "-" + error.property + "\n";
-      }
+      // Generate message
+      var message = validatorToMessage(res);
 
       // Alert user to error
       alert(message);
@@ -268,15 +278,9 @@
     var res = validator.validate(taskObject, schema);
 
     // Check if validation failed
-    // TODO: refactor repeated code with onSaveTask
     if (!res.valid) {
-      // Create error message
-      var message = "Invalid task configuration. Aborting push.";
-      message += "\n\n";
-      message += "Errors:\n";
-      for (var error of res.errors) {
-        message += "-" + error.property + "\n";
-      }
+      // Generate message
+      var message = validatorToMessage(res);
 
       // Alert user to error
       alert(message);
